@@ -2,7 +2,7 @@ extends CharacterBody2D
 @export var bullet_scene: PackedScene
 @export  var fire_rate = 0.5
 
-@onready var muzzle = $Sprite2D/muzzle
+@onready var muzzle = $AnimatedSprite2D/muzzle
 
 var reload = 0.0
 
@@ -14,6 +14,8 @@ func _process(delta: float) -> void:
 	
 
 func fire():
+	pla
+	
 	var bullet = bullet_scene.instantiate()
 	
 	bullet.global_position = muzzle.global_position

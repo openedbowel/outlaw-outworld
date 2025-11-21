@@ -1,11 +1,43 @@
-[gd_scene load_steps=5 format=3 uid="uid://c6amlu6fxbdxq"]
+[gd_scene load_steps=10 format=3 uid="uid://c6amlu6fxbdxq"]
 
 [ext_resource type="Script" uid="uid://dqsrshqjeiwrq" path="res://Script/ranged_enemy.gd" id="1_alsgf"]
 [ext_resource type="PackedScene" uid="uid://dy3n2vx324ioy" path="res://Scene/ranged_enemy_bullet.tscn" id="2_5rm4b"]
-[ext_resource type="Texture2D" uid="uid://bn8van5dbcb8j" path="res://Sprite/placeholder_ranged_enemy.png" id="2_q06ob"]
+[ext_resource type="Texture2D" uid="uid://diilipn31gc3v" path="res://Sprite/ATTACK (hold).PNG" id="3_q66jx"]
+[ext_resource type="Texture2D" uid="uid://cnvvc22ou5bx2" path="res://Sprite/FE1.PNG" id="4_q66jx"]
+[ext_resource type="Texture2D" uid="uid://5vcolhpcwcdk" path="res://Sprite/FE2.PNG" id="5_texor"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_5rm4b"]
 radius = 46.09772
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_6lo8w"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("3_q66jx")
+}],
+"loop": true,
+"name": &"flying_enemy_attack",
+"speed": 4.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("4_q66jx")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_texor")
+}],
+"loop": true,
+"name": &"flying_enemy_idle",
+"speed": 4.5
+}]
+
+[sub_resource type="Animation" id="Animation_q66jx"]
+resource_name = "flying_enemy_attack"
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_texor"]
+_data = {
+&"flying_enemy_attack": SubResource("Animation_q66jx")
+}
 
 [node name="RangedEnemy" type="Node2D"]
 
@@ -13,19 +45,28 @@ radius = 46.09772
 position = Vector2(604, 312)
 script = ExtResource("1_alsgf")
 bullet_scene = ExtResource("2_5rm4b")
-
-[node name="Sprite2D" type="Sprite2D" parent="CharacterBody2D"]
-position = Vector2(-0.74005127, -0.74005127)
-rotation = 3.1415927
-scale = Vector2(0.049468435, 0.049468435)
-texture = ExtResource("2_q06ob")
-
-[node name="muzzle" type="Marker2D" parent="CharacterBody2D/Sprite2D"]
-unique_name_in_owner = true
-position = Vector2(1865.0261, 5.2546773)
+fire_rate = null
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="CharacterBody2D"]
-position = Vector2(0.25994873, -0.74005127)
+position = Vector2(7, -1)
 shape = SubResource("CircleShape2D_5rm4b")
 
 [node name="Node2D" type="Node2D" parent="CharacterBody2D"]
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="CharacterBody2D"]
+position = Vector2(7, -8.000008)
+scale = Vector2(0.3541667, 0.3541667)
+sprite_frames = SubResource("SpriteFrames_6lo8w")
+animation = &"flying_enemy_attack"
+autoplay = "flying_enemy_idle"
+
+[node name="muzzle" type="Marker2D" parent="CharacterBody2D/AnimatedSprite2D"]
+unique_name_in_owner = true
+position = Vector2(-166.5882, 64.94113)
+rotation = -3.1415925
+scale = Vector2(0.049468435, 0.049468435)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="CharacterBody2D"]
+libraries = {
+&"": SubResource("AnimationLibrary_texor")
+}

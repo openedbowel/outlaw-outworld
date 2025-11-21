@@ -1,5 +1,5 @@
 extends CharacterBody2D
-@export var speed = -2000 
+@export var speed = -1000
 
 func _physics_process(delta: float) -> void:
 	velocity = Vector2(speed, 0).rotated(rotation)
